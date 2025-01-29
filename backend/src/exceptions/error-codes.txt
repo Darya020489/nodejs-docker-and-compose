@@ -1,0 +1,25 @@
+import { HttpStatus } from "@nestjs/common";
+
+export enum ErrorCode {
+  UpdateError = 400,
+  Forbidden = 403,
+  NotFound = 404,
+  UserAlreadyExists = 409,
+}
+
+export const code2message = new Map<ErrorCode, string>([
+  [ErrorCode.UpdateError, "Ошибка обновления, некорректные данные"],
+  [ErrorCode.Forbidden, "Forbidden"],
+  [
+    ErrorCode.UserAlreadyExists,
+    "Пользователь с таким email или username уже зарегистрирован",
+  ],
+  [ErrorCode.NotFound, "Объект не найден"],
+]);
+
+export const code2status = new Map<ErrorCode, HttpStatus>([
+  [ErrorCode.UpdateError, HttpStatus.BAD_REQUEST],
+  [ErrorCode.Forbidden, HttpStatus.FORBIDDEN],
+  [ErrorCode.UserAlreadyExists, HttpStatus.CONFLICT],
+  [ErrorCode.NotFound, HttpStatus.NOT_FOUND],
+]);

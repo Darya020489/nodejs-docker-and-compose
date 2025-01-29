@@ -1,0 +1,51 @@
+services:
+  frontend:
+    container_name: kupipodariday-frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    image: dariaevtushok/kupipodariday-frontend:1.0.0-alpine
+    restart: unless-stopped
+    ports:
+      - 8081:80
+    networks:
+      - external
+
+  backend:
+    container_name: kupipodariday-backend
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    image: dariaevtushok/kupipodariday-backend:1.0.0-alpine
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - 4000:3000
+    networks:
+      - internal
+
+  database:
+    container_name: postgres-database
+    image: postgres:alpine
+    restart: always
+    env_file: .env
+    volumes:
+      - postgres_data:${PGDATA}
+    networks:
+      - internal
+
+  adminer:
+    container_name: postgres-preview
+    image: adminer
+    restart: always
+    ports:
+      - 5000:8080
+    networks:
+      - internal
+
+volumes:
+  postgres_data:
+
+networks:
+  internal:
+  external:
